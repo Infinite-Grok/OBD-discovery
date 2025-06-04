@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obadiah's Woodstoves - AI System Discovery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background: #f5f5f5;
+            padding: 10px;
+            counter-reset: section;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.6em;
+            margin-bottom: 8px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #FF6B35;
+        }
+        
+        .section h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h3::before {
+            content: counter(section);
+            counter-increment: section;
+            background: #FF6B35;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.8em;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 0.9em;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        .priority-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .priority-btn {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .priority-btn:hover {
+            border-color: #FF6B35;
+            background: #fff3f0;
+        }
+        
+        .priority-btn.selected {
+            background: #FF6B35;
+            color: white;
+            border-color: #FF6B35;
+        }
+        
+        .website-item {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .website-name {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .submit-container {
+            text-align: center;
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #FF6B35 0%, #8B4513 100%);
+            border-radius: 5px;
+        }
+        
+        .submit-btn {
+            background: white;
+            color: #FF6B35;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .submit-btn:hover {
+            background: #f8f8f8;
+        }
+        
+        .phase-option {
+            margin: 8px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .phase-option input {
+            margin-right: 8px;
+        }
+        
+        .radio-option {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .radio-option label {
+            font-weight: normal;
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.85em;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .results-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .results-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .results-header {
+            background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        
+        .results-body {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .summary-text {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+        }
+        
+        .email-btn {
+            background: #FF6B35;
+            color: white;
+        }
+        
+        .email-btn:hover {
+            background: #e55a2b;
+        }
+        
+        .close-btn {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .close-btn:hover {
+            background: #545b62;
+        }
+        
+        .copy-success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+        
+        .demo-message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            line-height: 1.3;
+            font-size: 0.85em;
+        }
+        
+        .ai-message {
+            background: #e8f4fd;
+            border-left: 3px solid #FF6B35;
+        }
+        
+        .user-message {
+            background: #f0f8f0;
+            border-left: 3px solid #28a745;
+            margin-left: 15px;
+        }
+        
+        .demo-option {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.8em;
+        }
+        
+        .demo-option:hover {
+            border-color: #FF6B35;
+            background: #fff3f0;
+            transform: translateY(-1px);
+        }
+        
+        .demo-question {
+            margin-bottom: 15px;
+        }
+        
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.8em;
+        }
+        
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes bling {
+            0% { transform: scale(1) rotate(0deg); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+            25% { transform: scale(1.1) rotate(-2deg); box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4); }
+            50% { transform: scale(1.2) rotate(2deg); box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6); }
+            75% { transform: scale(1.1) rotate(-1deg); box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4); }
+            100% { transform: scale(1) rotate(0deg); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        }
+        
+        @keyframes moneyBling {
+            0% { color: #28a745; transform: scale(1); }
+            25% { color: #FFD700; transform: scale(1.2); }
+            50% { color: #FF6B35; transform: scale(1.3); }
+            75% { color: #FFD700; transform: scale(1.2); }
+            100% { color: #28a745; transform: scale(1); }
+        }
+        
+        .cart-bling {
+            animation: bling 0.8s ease-in-out;
+        }
+        
+        .money-bling {
+            animation: moneyBling 0.8s ease-in-out;
+        }
+        
+        .typing-indicator {
+            display: none;
+            color: #666;
+            font-style: italic;
+            padding: 8px 12px;
+            font-size: 0.8em;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .priority-group {
+                grid-template-columns: 1fr 1fr;
+                gap: 5px;
+            }
+            
+            .priority-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            
+            .results-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Obadiah's Woodstoves AI System</h1>
+            <p>Comprehensive Discovery & Phased Development Strategy</p>
+        </div>
+        
+        <div class="content">
+            <form id="obadiaDiscoveryForm">
+                
+                <div class="section">
+                    <h3>Current Business Challenges</h3>
+                    
+                    <div class="form-group">
+                        <label>What's your #1 customer service challenge?</label>
+                        <textarea name="biggest_problem" placeholder="e.g., customers buying wrong parts, too many support calls..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What causes you to lose the most sales?</label>
+                        <textarea name="lost_sales" placeholder="e.g., customers get overwhelmed by choices..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Weekly customer support time/cost:</label>
+                        <select name="support_cost">
+                            <option value="">Select...</option>
+                            <option value="under_10_hours">Under 10 hours/week</option>
+                            <option value="10_25_hours">10-25 hours/week</option>
+                            <option value="25_50_hours">25-50 hours/week</option>
+                            <option value="over_50_hours">Over 50 hours/week</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Additional comments about business challenges:</label>
+                        <textarea name="business_comments" placeholder="Any other pain points, opportunities, or context..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Website Priorities</h3>
+                    <p style="margin-bottom: 15px; font-size: 0.9em; color: #666;">Rate each site's priority for AI implementation:</p>
+                    
+                    <div class="website-item">
+                        <div class="website-name">discountstoves.net (Volusion)</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="discountstoves_priority" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="discountstoves_priority" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="discountstoves_priority" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="discountstoves_priority" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">stove-parts.net (Volusion)</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="stoveparts_priority" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="stoveparts_priority" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="stoveparts_priority" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="stoveparts_priority" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">woodstoves.net (Expression Engine)</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="woodstoves_priority" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="woodstoves_priority" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="woodstoves_priority" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="woodstoves_priority" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">cookstoves.net (WordPress)</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="cookstoves_priority" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="cookstoves_priority" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="cookstoves_priority" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="cookstoves_priority" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">wood-boilers.net (WordPress)</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="woodboilers_priority" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="woodboilers_priority" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="woodboilers_priority" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="woodboilers_priority" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">chimney101.com (WordPress)</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="chimney101_priority" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="chimney101_priority" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="chimney101_priority" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="chimney101_priority" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Which sites get the most traffic/sales?</label>
+                        <textarea name="traffic_breakdown" placeholder="Rank your sites by importance..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Website-specific comments:</label>
+                        <textarea name="website_comments" placeholder="Special requirements, integration concerns, platform notes..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Feature Priorities</h3>
+                    <p style="margin-bottom: 15px; font-size: 0.9em; color: #666;">Rate by business impact:</p>
+                    
+                    <div class="website-item">
+                        <div class="website-name">Basic Q&A Support</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="basic_qa" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="basic_qa" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="basic_qa" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="basic_qa" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">Product Recommendations</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="product_recs" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="product_recs" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="product_recs" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="product_recs" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">Photo Analysis & Matching</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="photo_analysis" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="photo_analysis" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="photo_analysis" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="photo_analysis" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">Smart Configurator System</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="configurator" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="configurator" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="configurator" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="configurator" data-value="low">Low</button>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="configurator_approach" value="new">
+                                    Build new configurator system
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="configurator_approach" value="integrate">
+                                    Integrate with existing configurator system
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="website-item">
+                        <div class="website-name">Automated Cart Building</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="auto_cart" data-value="critical">Critical</button>
+                            <button type="button" class="priority-btn" data-name="auto_cart" data-value="high">High</button>
+                            <button type="button" class="priority-btn" data-name="auto_cart" data-value="medium">Medium</button>
+                            <button type="button" class="priority-btn" data-name="auto_cart" data-value="low">Low</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Feature-specific comments:</label>
+                        <textarea name="feature_comments" placeholder="Specific use cases, requirements, or ideas for these features..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Development Phases</h3>
+                    
+                    <div class="phase-option">
+                        <label>
+                            <input type="checkbox" name="phase1_approved" value="yes">
+                            <strong>Phase 1: Proof of Concept</strong> (2-3 weeks)<br>
+                            <small>Single website, basic Q&A, product recommendations - FAST delivery</small>
+                        </label>
+                    </div>
+                    
+                    <div class="phase-option">
+                        <label>
+                            <input type="checkbox" name="phase2_rollout" value="yes">
+                            <strong>Phase 2: Multi-Site Rollout</strong> (3-5 days per site)<br>
+                            <small>Rapid deployment to additional websites</small>
+                        </label>
+                    </div>
+                    
+                    <div class="phase-option">
+                        <label>
+                            <input type="checkbox" name="phase3_advanced" value="yes">
+                            <strong>Phase 3: Advanced Features</strong> (2-3 weeks)<br>
+                            <small>Photo analysis, smart configurator, automation - aggressive timeline</small>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Development phase comments:</label>
+                        <textarea name="phase_comments" placeholder="Timeline preferences, concerns, or specific requirements for any phase..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Budget & Timeline</h3>
+                    
+                    <div class="form-group">
+                        <label>Total budget range:</label>
+                        <select name="total_budget">
+                            <option value="">Select...</option>
+                            <option value="under_10k">Under $10,000</option>
+                            <option value="10k_25k">$10,000 - $25,000</option>
+                            <option value="25k_50k">$25,000 - $50,000</option>
+                            <option value="50k_100k">$50,000 - $100,000</option>
+                            <option value="over_100k">Over $100,000</option>
+                            <option value="depends_on_roi">Depends on proven ROI</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preferred timeline:</label>
+                        <select name="timeline_preference">
+                            <option value="">Select...</option>
+                            <option value="asap">Launch Phase 1 within 2 weeks</option>
+                            <option value="aggressive_phased">Aggressive phased rollout (3-4 months total)</option>
+                            <option value="rapid_mvp">Rapid MVP approach - prove value fast</option>
+                            <option value="full_system_fast">Complete system in 6-8 weeks</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Success measurement for Phase 1:</label>
+                        <textarea name="success_measurement" placeholder="e.g., 25% reduction in support calls, 15% increase in conversions..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Budget & timeline comments:</label>
+                        <textarea name="budget_comments" placeholder="Flexibility, approval process, ROI expectations, or other considerations..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Live Demo: AI-Powered Configurator</h3>
+                    <p style="margin-bottom: 20px; font-style: italic; color: #666;">This is a sample of what we can build for you - try it out!</p>
+                    
+                    <div id="configurator-demo" style="background: white; border: 2px solid #FF6B35; border-radius: 10px; padding: 20px;">
+                        <div id="demo-header" style="text-align: center; margin-bottom: 15px;">
+                            <h4 style="color: #8B4513; margin-bottom: 8px;">🔥 Smart Stove Configurator Demo</h4>
+                            <p style="color: #666; font-size: 0.85em;">Answer a few questions and watch the AI build your shopping list</p>
+                        </div>
+                        
+                        <div id="demo-chat" style="background: #f8f9fa; border-radius: 8px; padding: 15px; max-height: 300px; overflow-y: auto; margin-bottom: 15px;">
+                            <div class="demo-message ai-message">
+                                <strong style="color: #FF6B35;">🤖 AI Assistant:</strong> Hi! I'm here to help you find the perfect stove setup. Let's start with a few questions to build your personalized parts list.
+                            </div>
+                        </div>
+                        
+                        <div id="demo-questions" style="display: block;">
+                            <div class="demo-question active" data-step="1">
+                                <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">What type of space are you heating?</p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;">
+                                    <button class="demo-option" data-value="living_room">Living Room</button>
+                                    <button class="demo-option" data-value="bedroom">Bedroom</button>
+                                    <button class="demo-option" data-value="basement">Basement</button>
+                                    <button class="demo-option" data-value="whole_house">Whole House</button>
+                                    <button class="demo-option" data-value="cabin">Cabin/Workshop</button>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-question" data-step="2" style="display: none;">
+                                <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">What's the approximate square footage?</p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
+                                    <button class="demo-option" data-value="under_500">Under 500</button>
+                                    <button class="demo-option" data-value="500_1000">500-1000</button>
+                                    <button class="demo-option" data-value="1000_1500">1000-1500</button>
+                                    <button class="demo-option" data-value="over_1500">Over 1500</button>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-question" data-step="3" style="display: none;">
+                                <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">Do you have an existing chimney?</p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;">
+                                    <button class="demo-option" data-value="existing_chimney">Yes, existing</button>
+                                    <button class="demo-option" data-value="no_chimney">No, need new</button>
+                                    <button class="demo-option" data-value="not_sure">Not sure</button>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-question" data-step="4" style="display: none;">
+                                <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">What's your style preference?</p>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
+                                    <button class="demo-option" data-value="traditional">Traditional</button>
+                                    <button class="demo-option" data-value="modern">Modern</button>
+                                    <button class="demo-option" data-value="rustic">Rustic</button>
+                                    <button class="demo-option" data-value="any_style">Any Style</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="demo-results" style="display: none;">
+                            <div style="background: #e8f5e8; border: 2px solid #28a745; border-radius: 8px; padding: 15px; margin-top: 15px;">
+                                <h5 style="color: #155724; margin-bottom: 10px;">🎯 Your Personalized Shopping List</h5>
+                                <div id="recommended-products" style="margin-bottom: 10px;"></div>
+                                <div style="text-align: center; margin-top: 15px;">
+                                    <button id="add-to-cart-demo" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.9em;">
+                                        Add All Items to Cart - $2,847
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 15px; padding: 12px; background: #fff3cd; border-radius: 8px;">
+                                <p style="color: #856404; font-weight: 600; font-size: 0.85em;">✨ This is just a sample of what we can build for your business!</p>
+                                <button id="restart-demo" style="background: #FF6B35; color: white; padding: 6px 15px; border: none; border-radius: 15px; margin-top: 8px; cursor: pointer; font-size: 0.8em;">
+                                    Try Demo Again
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Additional Comments</h3>
+                    
+                    <div class="form-group">
+                        <label>Additional comments or questions:</label>
+                        <textarea name="general_comments" placeholder="Anything else you'd like me to know about your business, goals, or this project..."></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button type="button" id="submitBtn" class="submit-btn">Generate Response Summary</button>
+                    <p style="margin-top: 10px; color: rgba(255,255,255,0.9); font-size: 0.9em;">
+                        This will create a formatted summary to copy and send
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="results-modal">
+        <div class="results-content">
+            <div class="results-header">
+                <h2>📋 Response Summary Generated</h2>
+                <p>Copy the text below and email it to pkoaweb@gmail.com</p>
+            </div>
+            <div class="results-body">
+                <div id="copySuccess" class="copy-success">
+                    ✅ Copied to clipboard! Now paste it into your email.
+                </div>
+                <div id="summaryText" class="summary-text"></div>
+                <div class="action-buttons">
+                    <button id="copyBtn" class="action-btn copy-btn">📋 Copy to Clipboard</button>
+                    <button id="emailBtn" class="action-btn email-btn">📧 Open Email</button>
+                    <button id="closeBtn" class="action-btn close-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo Configurator Logic
+        let demoAnswers = {};
+        let currentStep = 1;
+        
+        // Priority button and demo handling
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('priority-btn')) {
+                e.preventDefault();
+                
+                const name = e.target.dataset.name;
+                
+                // Remove selected class from all buttons with same name
+                document.querySelectorAll(`[data-name="${name}"]`).forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked button
+                e.target.classList.add('selected');
+            }
+            
+            // Demo configurator handling
+            if (e.target.classList.contains('demo-option')) {
+                handleDemoOption(e.target);
+            } else if (e.target.id === 'restart-demo') {
+                restartDemo();
+            } else if (e.target.id === 'add-to-cart-demo') {
+                // Add bling animation to button
+                e.target.classList.add('cart-bling');
+                
+                // Change button text to just $$$ and animate it
+                const originalButtonText = e.target.textContent;
+                e.target.textContent = '$$$';
+                e.target.classList.add('money-bling');
+                
+                // Find and animate all money amounts in the product list
+                const moneyElements = document.querySelectorAll('#recommended-products [style*="color: #28a745"]');
+                moneyElements.forEach(el => {
+                    if (el.textContent.includes('$')) {
+                        el.classList.add('money-bling');
+                        const originalText = el.textContent;
+                        el.textContent = '$$$';
+                        
+                        setTimeout(() => {
+                            el.textContent = originalText;
+                        }, 800);
+                    }
+                });
+                
+                // Change button back after animation
+                setTimeout(() => {
+                    e.target.textContent = originalButtonText;
+                }, 800);
+                
+                // Remove animation classes
+                setTimeout(() => {
+                    e.target.classList.remove('cart-bling', 'money-bling');
+                    moneyElements.forEach(el => el.classList.remove('money-bling'));
+                }, 800);
+                
+                // Show alert after delay
+                setTimeout(() => {
+                    alert('🛒 Great! In the real system, these items would be added to your cart automatically. This demonstrates the seamless integration we can build for your customers.');
+                }, 400);
+            }
+        });
+
+        // Form submission - using direct button click approach
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const form = document.getElementById('obadiaDiscoveryForm');
+                    if (!form) return;
+                    
+                    // Collect form data
+                    const formData = new FormData(form);
+                    let data = {};
+                    
+                    // Get regular form fields
+                    for (let [key, value] of formData.entries()) {
+                        if (data[key]) {
+                            if (Array.isArray(data[key])) {
+                                data[key].push(value);
+                            } else {
+                                data[key] = [data[key], value];
+                            }
+                        } else {
+                            data[key] = value;
+                        }
+                    }
+                    
+                    // Collect priority selections
+                    document.querySelectorAll('.priority-btn.selected').forEach(btn => {
+                        data[btn.dataset.name] = btn.dataset.value;
+                    });
+                    
+                    // Generate development plan
+                    const developmentPlan = generateDevelopmentPlan(data);
+                    
+                    // Show modal with results
+                    document.getElementById('summaryText').textContent = developmentPlan;
+                    document.getElementById('resultsModal').style.display = 'block';
+                    
+                    // Store the text globally for copying
+                    window.generatedText = developmentPlan;
+                });
+            }
+        });
+        
+        // Modal event handlers
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            navigator.clipboard.writeText(window.generatedText).then(function() {
+                document.getElementById('copySuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copySuccess').style.display = 'none';
+                }, 3000);
+            }).catch(function() {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = window.generatedText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                document.getElementById('copySuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copySuccess').style.display = 'none';
+                }, 3000);
+            });
+        });
+        
+        document.getElementById('emailBtn').addEventListener('click', function() {
+            const subject = `Obadiah's Woodstoves AI Discovery Response`;
+            const mailtoLink = `mailto:pkoaweb@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(window.generatedText)}`;
+            window.open(mailtoLink);
+        });
+        
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('resultsModal').style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('resultsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+        
+        function generateDevelopmentPlan(data) {
+            return `🔥 OBADIAH'S WOODSTOVES - AI SYSTEM DISCOVERY FORM
+=====================================================
+
+📊 BUSINESS PRIORITIES
+----------------------
+Top Problem: ${data.biggest_problem || 'Not specified'}
+Lost Sales Cause: ${data.lost_sales || 'Not specified'}
+Support Cost: ${data.support_cost || 'Not specified'}
+Additional Comments: ${data.business_comments || 'None provided'}
+
+🌐 WEBSITE PRIORITIES
+---------------------
+• discountstoves.net: ${data.discountstoves_priority || 'Not set'}
+• stove-parts.net: ${data.stoveparts_priority || 'Not set'}
+• woodstoves.net: ${data.woodstoves_priority || 'Not set'}
+• cookstoves.net: ${data.cookstoves_priority || 'Not set'}
+• wood-boilers.net: ${data.woodboilers_priority || 'Not set'}
+• chimney101.com: ${data.chimney101_priority || 'Not set'}
+
+Traffic/Sales Notes: ${data.traffic_breakdown || 'Not provided'}
+Website Comments: ${data.website_comments || 'None provided'}
+
+🎯 FEATURE PRIORITIES
+--------------------
+• Basic Q&A Support: ${data.basic_qa || 'Not set'}
+• Product Recommendations: ${data.product_recs || 'Not set'}
+• Photo Analysis: ${data.photo_analysis || 'Not set'}
+• Smart Configurator: ${data.configurator || 'Not set'}
+• Automated Cart: ${data.auto_cart || 'Not set'}
+Configurator Approach: ${data.configurator_approach === 'new' ? 'Build new configurator system' : data.configurator_approach === 'integrate' ? 'Integrate with existing configurator system' : 'Not specified'}
+Feature Comments: ${data.feature_comments || 'None provided'}
+
+💰 BUDGET & TIMELINE
+--------------------
+Budget Range: ${data.total_budget || 'Not specified'}
+Timeline Preference: ${data.timeline_preference || 'Not specified'}
+Success Measurement: ${data.success_measurement || 'Not defined'}
+Budget Comments: ${data.budget_comments || 'None provided'}
+
+🚀 APPROVED PHASES
+------------------
+Phase 1 (2-3 weeks): ${data.phase1_approved ? 'APPROVED ✅' : 'Not selected'}
+Phase 2 (3-5 days per site): ${data.phase2_rollout ? 'APPROVED ✅' : 'Not selected'}
+Phase 3 (2-3 weeks): ${data.phase3_advanced ? 'APPROVED ✅' : 'Not selected'}
+Phase Comments: ${data.phase_comments || 'None provided'}
+
+⚡ AGGRESSIVE DEVELOPMENT TIMELINE
+=================================
+I'm very excited to be working with you on this project! These are initial estimates based on this discovery form. I'll provide much more accurate timelines after we complete our detailed technical discovery session.
+
+With 20-25+ hours/week dedicated development time, I move FAST:
+
+PHASE 1: LIVE IN 2-3 WEEKS
+• Single highest-priority website
+• Functional Q&A system
+• Product recommendations
+• Immediate customer impact
+
+PHASE 2: 3-5 DAYS PER ADDITIONAL SITE
+• Rapid multi-site deployment
+• Platform-specific optimizations
+• Cross-site analytics
+
+PHASE 3: ADVANCED FEATURES IN 2-3 WEEKS
+• Photo analysis and matching
+• Smart configurator system
+• Automated cart building
+• Enterprise-level functionality
+
+TOTAL ESTIMATED TIMELINE: 7-11 WEEKS FOR COMPLETE SYSTEM
+This is enterprise-level AI development at startup speed.
+
+🎯 NEXT STEPS
+=============
+1. Follow-up discovery (within 24 hours)
+2. Technical access and data review (Day 1-2)
+3. Architecture planning and refined timeline (Day 3-5)
+4. Development sprint begins (Week 1)
+5. First working prototype (Week 2-3)
+6. Live deployment and testing (Week 3-4)
+
+I deliver working software FAST, then iterate based on real customer feedback.
+
+💬 ADDITIONAL COMMENTS
+======================
+${data.general_comments || 'None provided'}`;
+        }
+        
+        // Demo functions (shortened for space)
+        function handleDemoOption(button) {
+            const step = parseInt(button.closest('.demo-question').dataset.step);
+            const value = button.dataset.value;
+            
+            demoAnswers[`step_${step}`] = value;
+            addDemoMessage(`👤 Customer: ${button.textContent}`, 'user-message');
+            document.querySelector(`[data-step="${step}"]`).style.display = 'none';
+            
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                if (step < 4) {
+                    const aiResponse = getAIResponse(step, value);
+                    addDemoMessage(`🤖 AI Assistant: ${aiResponse}`, 'ai-message');
+                    setTimeout(() => showNextQuestion(step + 1), 500);
+                } else {
+                    showDemoResults();
+                }
+            }, 1200);
+        }
+        
+        function getAIResponse(step, value) {
+            const responses = {
+                1: { 'living_room': 'Perfect! A living room installation creates a beautiful focal point. Now I need to know the size to recommend the right heating capacity.' },
+                2: { 'under_500': 'Perfect size for a compact, efficient stove. Do you have an existing chimney system we can work with?' },
+                3: { 'existing_chimney': 'Excellent! That can simplify installation and reduce costs. What style matches your space best?' }
+            };
+            return responses[step]?.[value] || 'Great choice! Let me continue building your perfect heating solution...';
+        }
+        
+        function showNextQuestion(step) {
+            const nextQuestion = document.querySelector(`[data-step="${step}"]`);
+            if (nextQuestion) {
+                nextQuestion.style.display = 'block';
+                nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        
+        function showDemoResults() {
+            addDemoMessage('🤖 AI Assistant: Perfect! Based on your answers, I\'ve created a complete shopping list with everything you need.', 'ai-message');
+            setTimeout(() => {
+                generateProductRecommendations();
+                document.getElementById('demo-results').style.display = 'block';
+                document.getElementById('demo-results').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+        
+        function generateProductRecommendations() {
+            const products = [
+                { name: 'Heritage Cast Iron Medium Wood Stove', price: 1299, category: 'Primary Heating Unit' },
+                { name: 'Chimney Liner & Connection Kit', price: 847, category: 'Chimney System' },
+                { name: 'Professional Heat Shield & Floor Protection Kit', price: 189, category: 'Safety Equipment' },
+                { name: 'Premium Installation Hardware & Fasteners', price: 156, category: 'Installation' },
+                { name: 'UL Listed Carbon Monoxide Detector', price: 89, category: 'Safety Equipment' },
+                { name: 'Insulated Stove Pipe & Connection Kit', price: 267, category: 'Venting System' }
+            ];
+            
+            const container = document.getElementById('recommended-products');
+            container.innerHTML = '';
+            
+            products.forEach((product, index) => {
+                const div = document.createElement('div');
+                div.className = 'product-item';
+                div.style.cssText = `animation: slideInLeft 0.5s ease-out ${index * 0.1}s both;`;
+                div.innerHTML = `
+                    <div>
+                        <div style="font-weight: 600; color: #155724; font-size: 0.85em;">✓ ${product.name}</div>
+                        <div style="font-size: 0.75em; color: #666;">${product.category}</div>
+                    </div>
+                    <div style="font-weight: bold; color: #28a745; font-size: 0.9em;">$${product.price}</div>
+                `;
+                container.appendChild(div);
+            });
+            
+            const total = products.reduce((sum, product) => sum + product.price, 0);
+            const totalDiv = document.createElement('div');
+            totalDiv.style.cssText = `
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 12px 0 5px 0; border-top: 2px solid #28a745; margin-top: 8px; font-size: 0.9em;
+            `;
+            totalDiv.innerHTML = `
+                <div style="font-weight: bold; color: #155724;">Complete System Total:</div>
+                <div style="font-weight: bold; color: #28a745; font-size: 1.2em;">$${total}</div>
+            `;
+            container.appendChild(totalDiv);
+        }
+        
+        function addDemoMessage(message, className) {
+            const chatContainer = document.getElementById('demo-chat');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `demo-message ${className}`;
+            messageDiv.innerHTML = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function showTyping() {
+            const indicator = document.createElement('div');
+            indicator.className = 'typing-indicator';
+            indicator.innerHTML = '🤖 AI Assistant is thinking...';
+            indicator.style.display = 'block';
+            document.getElementById('demo-chat').appendChild(indicator);
+            document.getElementById('demo-chat').scrollTop = document.getElementById('demo-chat').scrollHeight;
+        }
+        
+        function hideTyping() {
+            const indicator = document.querySelector('.typing-indicator');
+            if (indicator) indicator.remove();
+        }
+        
+        function restartDemo() {
+            demoAnswers = {};
+            currentStep = 1;
+            document.getElementById('demo-chat').innerHTML = `
+                <div class="demo-message ai-message">
+                    <strong style="color: #FF6B35;">🤖 AI Assistant:</strong> Hi! I'm here to help you find the perfect stove setup. Let's start with a few questions to build your personalized parts list.
+                </div>
+            `;
+            document.querySelectorAll('.demo-question').forEach(q => q.style.display = 'none');
+            document.getElementById('demo-results').style.display = 'none';
+            document.querySelector('[data-step="1"]').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
