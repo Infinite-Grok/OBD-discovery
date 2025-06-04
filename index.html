@@ -882,7 +882,16 @@
                 
                 // Show alert after delay
                 setTimeout(() => {
-                    alert('🛒 Great! In the real system, these items would be added to your cart automatically. This demonstrates the seamless integration we can build for your customers.');
+                    // Just add a nice visual feedback instead of alert
+                    const button = e.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ Added to Cart!';
+                    button.style.background = '#28a745';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '#28a745';
+                    }, 2000);
                 }, 400);
             }
         });
