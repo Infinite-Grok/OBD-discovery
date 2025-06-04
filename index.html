@@ -718,40 +718,40 @@
                             <div class="demo-question active" data-step="1">
                                 <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">What type of space are you heating?</p>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;">
-                                    <button class="demo-option" data-value="living_room">Living Room</button>
-                                    <button class="demo-option" data-value="bedroom">Bedroom</button>
-                                    <button class="demo-option" data-value="basement">Basement</button>
-                                    <button class="demo-option" data-value="whole_house">Whole House</button>
-                                    <button class="demo-option" data-value="cabin">Cabin/Workshop</button>
+                                    <button type="button" class="demo-option" data-value="living_room">Living Room</button>
+                                    <button type="button" class="demo-option" data-value="bedroom">Bedroom</button>
+                                    <button type="button" class="demo-option" data-value="basement">Basement</button>
+                                    <button type="button" class="demo-option" data-value="whole_house">Whole House</button>
+                                    <button type="button" class="demo-option" data-value="cabin">Cabin/Workshop</button>
                                 </div>
                             </div>
                             
                             <div class="demo-question" data-step="2" style="display: none;">
                                 <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">What's the approximate square footage?</p>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
-                                    <button class="demo-option" data-value="under_500">Under 500</button>
-                                    <button class="demo-option" data-value="500_1000">500-1000</button>
-                                    <button class="demo-option" data-value="1000_1500">1000-1500</button>
-                                    <button class="demo-option" data-value="over_1500">Over 1500</button>
+                                    <button type="button" class="demo-option" data-value="under_500">Under 500</button>
+                                    <button type="button" class="demo-option" data-value="500_1000">500-1000</button>
+                                    <button type="button" class="demo-option" data-value="1000_1500">1000-1500</button>
+                                    <button type="button" class="demo-option" data-value="over_1500">Over 1500</button>
                                 </div>
                             </div>
                             
                             <div class="demo-question" data-step="3" style="display: none;">
                                 <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">Do you have an existing chimney?</p>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;">
-                                    <button class="demo-option" data-value="existing_chimney">Yes, existing</button>
-                                    <button class="demo-option" data-value="no_chimney">No, need new</button>
-                                    <button class="demo-option" data-value="not_sure">Not sure</button>
+                                    <button type="button" class="demo-option" data-value="existing_chimney">Yes, existing</button>
+                                    <button type="button" class="demo-option" data-value="no_chimney">No, need new</button>
+                                    <button type="button" class="demo-option" data-value="not_sure">Not sure</button>
                                 </div>
                             </div>
                             
                             <div class="demo-question" data-step="4" style="display: none;">
                                 <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9em;">What's your style preference?</p>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">
-                                    <button class="demo-option" data-value="traditional">Traditional</button>
-                                    <button class="demo-option" data-value="modern">Modern</button>
-                                    <button class="demo-option" data-value="rustic">Rustic</button>
-                                    <button class="demo-option" data-value="any_style">Any Style</button>
+                                    <button type="button" class="demo-option" data-value="traditional">Traditional</button>
+                                    <button type="button" class="demo-option" data-value="modern">Modern</button>
+                                    <button type="button" class="demo-option" data-value="rustic">Rustic</button>
+                                    <button type="button" class="demo-option" data-value="any_style">Any Style</button>
                                 </div>
                             </div>
                         </div>
@@ -769,7 +769,7 @@
                             
                             <div style="text-align: center; margin-top: 15px; padding: 12px; background: #fff3cd; border-radius: 8px;">
                                 <p style="color: #856404; font-weight: 600; font-size: 0.85em;">✨ This is just a sample of what we can build for your business!</p>
-                                <button id="restart-demo" style="background: #FF6B35; color: white; padding: 6px 15px; border: none; border-radius: 15px; margin-top: 8px; cursor: pointer; font-size: 0.8em;">
+                                <button type="button" id="restart-demo" style="background: #FF6B35; color: white; padding: 6px 15px; border: none; border-radius: 15px; margin-top: 8px; cursor: pointer; font-size: 0.8em;">
                                     Try Demo Again
                                 </button>
                             </div>
@@ -840,10 +840,13 @@
             
             // Demo configurator handling
             if (e.target.classList.contains('demo-option')) {
+                e.preventDefault(); // Prevent form submission
                 handleDemoOption(e.target);
             } else if (e.target.id === 'restart-demo') {
+                e.preventDefault(); // Prevent form submission
                 restartDemo();
             } else if (e.target.id === 'add-to-cart-demo') {
+                e.preventDefault(); // Prevent form submission
                 // Add bling animation to button
                 e.target.classList.add('cart-bling');
                 
