@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obadiah's Woodstoves - Technical Discovery & Phase 1 Planning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background: #f5f5f5;
+            padding: 10px;
+            counter-reset: section;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.6em;
+            margin-bottom: 8px;
+        }
+        
+        .phase-summary {
+            background: linear-gradient(135deg, #FF6B35 0%, #8B4513 100%);
+            color: white;
+            padding: 15px 20px;
+            margin: 0;
+        }
+        
+        .phase-summary h2 {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #FF6B35;
+        }
+        
+        .section h3 {
+            color: #8B4513;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h3::before {
+            content: counter(section);
+            counter-increment: section;
+            background: #FF6B35;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.8em;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 0.9em;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        .priority-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .priority-btn {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .priority-btn:hover {
+            border-color: #FF6B35;
+            background: #fff3f0;
+        }
+        
+        .priority-btn.selected {
+            background: #FF6B35;
+            color: white;
+            border-color: #FF6B35;
+        }
+        
+        .feature-item {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .feature-name {
+            font-weight: bold;
+            color: #8B4513;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .feature-desc {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .submit-container {
+            text-align: center;
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #FF6B35 0%, #8B4513 100%);
+            border-radius: 5px;
+        }
+        
+        .submit-btn {
+            background: white;
+            color: #FF6B35;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .submit-btn:hover {
+            background: #f8f8f8;
+        }
+        
+        .radio-option {
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        
+        .radio-option label {
+            font-weight: normal;
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.85em;
+        }
+        
+        .radio-option input[type="radio"],
+        .radio-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .results-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .results-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .results-header {
+            background: linear-gradient(135deg, #8B4513 0%, #CD853F 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        
+        .results-body {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .summary-text {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .copy-btn:hover {
+            background: #218838;
+        }
+        
+        .email-btn {
+            background: #FF6B35;
+            color: white;
+        }
+        
+        .email-btn:hover {
+            background: #e55a2b;
+        }
+        
+        .close-btn {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .close-btn:hover {
+            background: #545b62;
+        }
+        
+        .copy-success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+        
+        .info-box {
+            background: #e8f4fd;
+            border: 1px solid #b8daff;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+        }
+        
+        .info-box strong {
+            color: #0056b3;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .checkbox-item {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        
+        .checkbox-item label {
+            font-weight: normal;
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.85em;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .priority-group {
+                grid-template-columns: 1fr 1fr;
+                gap: 5px;
+            }
+            
+            .priority-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            
+            .results-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Obadiah's Woodstoves AI System</h1>
+            <p>Phase 1: Technical Discovery & Implementation Planning</p>
+        </div>
+        
+        <div class="phase-summary">
+            <h2>📋 Phase 1 Approved: discountstoves.net Priority Implementation</h2>
+            <p>Based on your discovery form responses, we're focusing on your highest-impact website with Q&A support, product recommendations, and automated cart building. This form collects the technical details needed to begin development.</p>
+        </div>
+        
+        <div class="content">
+            <form id="technicalDiscoveryForm">
+                
+                <div class="section">
+                    <h3>Website Access & Technical Requirements</h3>
+                    
+                    <div class="info-box">
+                        <strong>Access Needed:</strong> To implement the AI system on discountstoves.net, I'll need specific access levels and technical information about your Volusion setup.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Volusion store admin access level you can provide:</label>
+                        <select name="admin_access_level">
+                            <option value="">Select...</option>
+                            <option value="full_admin">Full Administrator Access</option>
+                            <option value="limited_admin">Limited Administrator (can add HTML/JavaScript)</option>
+                            <option value="template_only">Template/Design Access Only</option>
+                            <option value="need_developer">Need to work with your web developer</option>
+                            <option value="unsure">Not sure what's available</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Current web developer or technical contact:</label>
+                        <input type="text" name="web_developer" placeholder="Name and contact info (if applicable)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hosting information (if known):</label>
+                        <textarea name="hosting_info" placeholder="Hosting provider, server details, any technical constraints..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Current website customizations or special integrations:</label>
+                        <textarea name="current_customizations" placeholder="Any custom features, third-party integrations, or modifications to standard Volusion..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Product Catalog & Data Access</h3>
+                    
+                    <div class="info-box">
+                        <strong>Data Requirements:</strong> The AI system needs access to your product information, specifications, and compatibility data to provide accurate recommendations.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>How is your product data currently managed?</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="data_management" value="volusion_catalog">
+                                    Volusion product catalog
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="data_management" value="external_database">
+                                    External database/spreadsheet
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="data_management" value="manual_entry">
+                                    Manual entry system
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="data_management" value="supplier_feeds">
+                                    Supplier data feeds
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Can you provide product catalog export (CSV/Excel)?</label>
+                        <select name="catalog_export_available">
+                            <option value="">Select...</option>
+                            <option value="yes_immediately">Yes, can export immediately</option>
+                            <option value="yes_with_help">Yes, but need help with export process</option>
+                            <option value="limited_export">Limited export capabilities</option>
+                            <option value="no_export">No export capabilities</option>
+                            <option value="unsure">Not sure</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Product manual and specification document storage:</label>
+                        <textarea name="manual_storage" placeholder="Where are product manuals stored? How are they organized? Can they be linked to products?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Typical customer questions about products:</label>
+                        <textarea name="common_questions" placeholder="What specific questions do customers ask most frequently? (clearances, log sizes, dimensions, compatibility, installation, etc.)"></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Existing Configurator Analysis</h3>
+                    
+                    <div class="info-box">
+                        <strong>Integration Opportunity:</strong> Your existing chimney configurator at stove-parts.net could potentially be integrated or used as a model for the AI system.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>How often is the current configurator used?</label>
+                        <select name="configurator_usage">
+                            <option value="">Select...</option>
+                            <option value="daily_multiple">Multiple times daily</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="rarely">Rarely used</option>
+                            <option value="unsure">Not sure</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>What percentage of configurator users complete the process?</label>
+                        <select name="configurator_completion">
+                            <option value="">Select...</option>
+                            <option value="over_75">Over 75%</option>
+                            <option value="50_75">50-75%</option>
+                            <option value="25_50">25-50%</option>
+                            <option value="under_25">Under 25%</option>
+                            <option value="unknown">Don't track this</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Issues with current configurator:</label>
+                        <textarea name="configurator_issues" placeholder="What problems do customers report? Where do they get stuck? What would you improve?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Configurator data and logic access:</label>
+                        <textarea name="configurator_access" placeholder="Can you provide the logic/rules used by the configurator? Database of parts and compatibility?"></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Phase 1 Feature Prioritization</h3>
+                    
+                    <div class="info-box">
+                        <strong>Implementation Order:</strong> To maximize impact within the 10-hour/week budget, we need to prioritize which features deliver the most immediate value.
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-name">Smart Q&A System</div>
+                        <div class="feature-desc">AI answers technical questions about clearances, specifications, installation requirements</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="qa_system_priority" data-value="week1">Week 1</button>
+                            <button type="button" class="priority-btn" data-name="qa_system_priority" data-value="week2">Week 2</button>
+                            <button type="button" class="priority-btn" data-name="qa_system_priority" data-value="week3">Week 3</button>
+                            <button type="button" class="priority-btn" data-name="qa_system_priority" data-value="later">Later Phase</button>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-name">Product Recommendation Engine</div>
+                        <div class="feature-desc">AI suggests stoves based on space size, heating needs, style preferences</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="recommendation_priority" data-value="week1">Week 1</button>
+                            <button type="button" class="priority-btn" data-name="recommendation_priority" data-value="week2">Week 2</button>
+                            <button type="button" class="priority-btn" data-name="recommendation_priority" data-value="week3">Week 3</button>
+                            <button type="button" class="priority-btn" data-name="recommendation_priority" data-value="later">Later Phase</button>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-name">Automated Cart Building</div>
+                        <div class="feature-desc">AI adds recommended products directly to shopping cart</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="cart_building_priority" data-value="week1">Week 1</button>
+                            <button type="button" class="priority-btn" data-name="cart_building_priority" data-value="week2">Week 2</button>
+                            <button type="button" class="priority-btn" data-name="cart_building_priority" data-value="week3">Week 3</button>
+                            <button type="button" class="priority-btn" data-name="cart_building_priority" data-value="later">Later Phase</button>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-name">Basic Configurator Integration</div>
+                        <div class="feature-desc">AI guides customers through chimney sizing and parts selection</div>
+                        <div class="priority-group">
+                            <button type="button" class="priority-btn" data-name="configurator_integration_priority" data-value="week1">Week 1</button>
+                            <button type="button" class="priority-btn" data-name="configurator_integration_priority" data-value="week2">Week 2</button>
+                            <button type="button" class="priority-btn" data-name="configurator_integration_priority" data-value="week3">Week 3</button>
+                            <button type="button" class="priority-btn" data-name="configurator_integration_priority" data-value="later">Later Phase</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Additional Phase 1 feature requirements:</label>
+                        <textarea name="additional_features" placeholder="Any other specific functionality needed for Phase 1 success?"></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Success Metrics & Analytics</h3>
+                    
+                    <div class="info-box">
+                        <strong>Measuring Impact:</strong> To prove ROI and secure approval for additional hours, we need clear metrics that show the AI system's business impact.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Current website analytics tools:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="analytics_tools" value="google_analytics">
+                                    Google Analytics
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="analytics_tools" value="volusion_analytics">
+                                    Volusion built-in analytics
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="analytics_tools" value="other_analytics">
+                                    Other analytics platform
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="analytics_tools" value="no_analytics">
+                                    No analytics currently
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Current conversion rate (if known):</label>
+                        <select name="current_conversion_rate">
+                            <option value="">Select...</option>
+                            <option value="under_1">Under 1%</option>
+                            <option value="1_2">1-2%</option>
+                            <option value="2_3">2-3%</option>
+                            <option value="3_5">3-5%</option>
+                            <option value="over_5">Over 5%</option>
+                            <option value="unknown">Don't track this</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Most important metrics to track for this project:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="important_metrics" value="chat_usage">
+                                    Chat widget usage rates
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="important_metrics" value="conversion_improvement">
+                                    Conversion rate improvement
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="important_metrics" value="support_call_reduction">
+                                    Reduction in support calls
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="important_metrics" value="cart_abandonment">
+                                    Cart abandonment reduction
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="important_metrics" value="customer_satisfaction">
+                                    Customer satisfaction scores
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="important_metrics" value="revenue_impact">
+                                    Direct revenue attribution
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Baseline metrics for comparison:</label>
+                        <textarea name="baseline_metrics" placeholder="Current weekly support hours, conversion rates, cart abandonment rates, or any other baseline data you can provide..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Integration & Deployment Preferences</h3>
+                    
+                    <div class="form-group">
+                        <label>Preferred chat widget placement:</label>
+                        <select name="widget_placement">
+                            <option value="">Select...</option>
+                            <option value="bottom_right">Bottom right corner (standard)</option>
+                            <option value="bottom_left">Bottom left corner</option>
+                            <option value="embedded_product">Embedded on product pages</option>
+                            <option value="dedicated_page">Dedicated chat page</option>
+                            <option value="multiple_locations">Multiple locations</option>
+                            <option value="flexible">Flexible - you recommend</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Brand/visual requirements:</label>
+                        <textarea name="visual_requirements" placeholder="Any specific colors, fonts, styling that should match your brand? Logo requirements?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Testing approach preference:</label>
+                        <select name="testing_approach">
+                            <option value="">Select...</option>
+                            <option value="staging_first">Test on staging site first</option>
+                            <option value="limited_pages">Test on limited pages initially</option>
+                            <option value="live_testing">Deploy live and iterate quickly</option>
+                            <option value="soft_launch">Soft launch to small customer segment</option>
+                            <option value="your_recommendation">Your recommendation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Backup/fallback requirements:</label>
+                        <textarea name="fallback_requirements" placeholder="What should happen if the AI system is down? Fallback to human support? Email form? Other options?"></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Communication & Project Management</h3>
+                    
+                    <div class="form-group">
+                        <label>Preferred communication frequency:</label>
+                        <select name="communication_frequency">
+                            <option value="">Select...</option>
+                            <option value="daily">Daily updates</option>
+                            <option value="every_other_day">Every other day</option>
+                            <option value="twice_weekly">Twice weekly</option>
+                            <option value="weekly">Weekly updates</option>
+                            <option value="as_needed">As needed basis</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Best communication methods:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="communication_methods" value="email">
+                                    Email updates
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="communication_methods" value="phone">
+                                    Phone calls
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="communication_methods" value="video">
+                                    Video calls/screen sharing
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <label>
+                                    <input type="checkbox" name="communication_methods" value="messaging">
+                                    Text/messaging apps
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Decision-making process:</label>
+                        <textarea name="decision_process" placeholder="Who needs to approve technical decisions? Any additional stakeholders involved in budget/scope approvals?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Availability for collaboration:</label>
+                        <textarea name="availability" placeholder="Best times to reach you, time zone, any scheduling constraints..."></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Future Phase Planning</h3>
+                    
+                    <div class="info-box">
+                        <strong>Looking Ahead:</strong> While we're focusing on Phase 1, understanding your future goals helps ensure we build a foundation that supports expansion.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>YouTube video integration priority for Phase 2:</label>
+                        <select name="youtube_integration_priority">
+                            <option value="">Select...</option>
+                            <option value="critical">Critical - top priority for Phase 2</option>
+                            <option value="high">High priority</option>
+                            <option value="medium">Medium priority</option>
+                            <option value="low">Low priority</option>
+                            <option value="future">Future consideration</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Photo analysis feature priority:</label>
+                        <select name="photo_analysis_priority">
+                            <option value="">Select...</option>
+                            <option value="critical">Critical for business success</option>
+                            <option value="high">High value potential</option>
+                            <option value="medium">Medium value</option>
+                            <option value="low">Nice to have</option>
+                            <option value="unnecessary">Not needed</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Multi-site rollout approach preference:</label>
+                        <textarea name="rollout_approach" placeholder="How would you prefer to expand to other sites? Sequential rollout? Simultaneous? Which sites are highest priority after discountstoves.net?"></textarea>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Additional Requirements & Questions</h3>
+                    
+                    <div class="form-group">
+                        <label>Specific technical constraints or requirements:</label>
+                        <textarea name="technical_constraints" placeholder="Any specific technologies to use/avoid? Performance requirements? Compliance needs?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Competitive considerations:</label>
+                        <textarea name="competitive_considerations" placeholder="Are there competitor websites or AI implementations you've seen that you like or want to avoid?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Additional questions or concerns:</label>
+                        <textarea name="additional_questions" placeholder="Anything else you'd like me to know or address before we begin development?"></textarea>
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button type="button" id="submitBtn" class="submit-btn">Generate Technical Requirements Summary</button>
+                    <p style="margin-top: 10px; color: rgba(255,255,255,0.9); font-size: 0.9em;">
+                        This will create a detailed technical plan and timeline for Phase 1 development
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="results-modal">
+        <div class="results-content">
+            <div class="results-header">
+                <h2>📋 Phase 1 Technical Plan Generated</h2>
+                <p>Copy the detailed plan below and email to pkoaweb@gmail.com</p>
+            </div>
+            <div class="results-body">
+                <div id="copySuccess" class="copy-success">
+                    ✅ Copied to clipboard! Now paste it into your email.
+                </div>
+                <div id="summaryText" class="summary-text"></div>
+                <div class="action-buttons">
+                    <button id="copyBtn" class="action-btn copy-btn">📋 Copy to Clipboard</button>
+                    <button id="emailBtn" class="action-btn email-btn">📧 Open Email</button>
+                    <button id="closeBtn" class="action-btn close-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Priority button handling
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('priority-btn')) {
+                e.preventDefault();
+                
+                const name = e.target.dataset.name;
+                
+                // Remove selected class from all buttons with same name
+                document.querySelectorAll(`[data-name="${name}"]`).forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked button
+                e.target.classList.add('selected');
+            }
+        });
+
+        // Form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const form = document.getElementById('technicalDiscoveryForm');
+                    if (!form) return;
+                    
+                    // Collect form data
+                    const formData = new FormData(form);
+                    let data = {};
+                    
+                    // Get regular form fields
+                    for (let [key, value] of formData.entries()) {
+                        if (data[key]) {
+                            if (Array.isArray(data[key])) {
+                                data[key].push(value);
+                            } else {
+                                data[key] = [data[key], value];
+                            }
+                        } else {
+                            data[key] = value;
+                        }
+                    }
+                    
+                    // Collect priority selections
+                    document.querySelectorAll('.priority-btn.selected').forEach(btn => {
+                        data[btn.dataset.name] = btn.dataset.value;
+                    });
+                    
+                    // Generate technical plan
+                    const technicalPlan = generateTechnicalPlan(data);
+                    
+                    // Show modal with results
+                    document.getElementById('summaryText').textContent = technicalPlan;
+                    document.getElementById('resultsModal').style.display = 'block';
+                    
+                    // Store the text globally for copying
+                    window.generatedText = technicalPlan;
+                });
+            }
+        });
+        
+        // Modal event handlers
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            navigator.clipboard.writeText(window.generatedText).then(function() {
+                document.getElementById('copySuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copySuccess').style.display = 'none';
+                }, 3000);
+            }).catch(function() {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = window.generatedText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                document.getElementById('copySuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copySuccess').style.display = 'none';
+                }, 3000);
+            });
+        });
+        
+        document.getElementById('emailBtn').addEventListener('click', function() {
+            const subject = `Obadiah's Woodstoves - Phase 1 Technical Discovery Response`;
+            const mailtoLink = `mailto:pkoaweb@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(window.generatedText)}`;
+            window.open(mailtoLink);
+        });
+        
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('resultsModal').style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('resultsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+        
+        function generateTechnicalPlan(data) {
+            return `🔥 OBADIAH'S WOODSTOVES - PHASE 1 TECHNICAL DISCOVERY
+========================================================
+
+📋 PROJECT OVERVIEW
+-------------------
+Client: Sarah Chain - Obadiah's Woodstoves
+Phase 1 Target: discountstoves.net (Volusion platform)
+Timeline: 2-3 weeks (10 hours/week allocation)
+Primary Goal: Increase sales conversions through AI-powered customer guidance
+
+🔧 TECHNICAL ACCESS & REQUIREMENTS
+----------------------------------
+Admin Access Level: ${data.admin_access_level || 'Not specified'}
+Web Developer Contact: ${data.web_developer || 'None provided'}
+Hosting Information: ${data.hosting_info || 'Not provided'}
+Current Customizations: ${data.current_customizations || 'None specified'}
+
+📊 PRODUCT DATA & CATALOG
+-------------------------
+Data Management: ${Array.isArray(data.data_management) ? data.data_management.join(', ') : data.data_management || 'Not specified'}
+Catalog Export Available: ${data.catalog_export_available || 'Not specified'}
+Manual Storage: ${data.manual_storage || 'Not provided'}
+Common Customer Questions: ${data.common_questions || 'Not provided'}
+
+⚙️ CONFIGURATOR ANALYSIS
+------------------------
+Current Usage Frequency: ${data.configurator_usage || 'Not specified'}
+Completion Rate: ${data.configurator_completion || 'Not specified'}
+Current Issues: ${data.configurator_issues || 'Not provided'}
+Logic/Data Access: ${data.configurator_access || 'Not provided'}
+
+🎯 PHASE 1 FEATURE IMPLEMENTATION TIMELINE
+==========================================
+
+WEEK 1 PRIORITIES:
+${data.qa_system_priority === 'week1' ? '✅ Smart Q&A System' : ''}
+${data.recommendation_priority === 'week1' ? '✅ Product Recommendation Engine' : ''}
+${data.cart_building_priority === 'week1' ? '✅ Automated Cart Building' : ''}
+${data.configurator_integration_priority === 'week1' ? '✅ Basic Configurator Integration' : ''}
+
+WEEK 2 PRIORITIES:
+${data.qa_system_priority === 'week2' ? '✅ Smart Q&A System' : ''}
+${data.recommendation_priority === 'week2' ? '✅ Product Recommendation Engine' : ''}
+${data.cart_building_priority === 'week2' ? '✅ Automated Cart Building' : ''}
+${data.configurator_integration_priority === 'week2' ? '✅ Basic Configurator Integration' : ''}
+
+WEEK 3 PRIORITIES:
+${data.qa_system_priority === 'week3' ? '✅ Smart Q&A System' : ''}
+${data.recommendation_priority === 'week3' ? '✅ Product Recommendation Engine' : ''}
+${data.cart_building_priority === 'week3' ? '✅ Automated Cart Building' : ''}
+${data.configurator_integration_priority === 'week3' ? '✅ Basic Configurator Integration' : ''}
+
+Additional Features: ${data.additional_features || 'None specified'}
+
+📈 SUCCESS METRICS & ANALYTICS
+------------------------------
+Current Analytics Tools: ${Array.isArray(data.analytics_tools) ? data.analytics_tools.join(', ') : data.analytics_tools || 'Not specified'}
+Current Conversion Rate: ${data.current_conversion_rate || 'Not specified'}
+Key Metrics to Track: ${Array.isArray(data.important_metrics) ? data.important_metrics.join(', ') : data.important_metrics || 'Not specified'}
+Baseline Data: ${data.baseline_metrics || 'Not provided'}
+
+🎨 INTEGRATION & DEPLOYMENT
+---------------------------
+Widget Placement: ${data.widget_placement || 'Not specified'}
+Visual Requirements: ${data.visual_requirements || 'Not provided'}
+Testing Approach: ${data.testing_approach || 'Not specified'}
+Fallback Requirements: ${data.fallback_requirements || 'Not provided'}
+
+💬 COMMUNICATION PLAN
+---------------------
+Update Frequency: ${data.communication_frequency || 'Not specified'}
+Preferred Methods: ${Array.isArray(data.communication_methods) ? data.communication_methods.join(', ') : data.communication_methods || 'Not specified'}
+Decision Process: ${data.decision_process || 'Not provided'}
+Availability: ${data.availability || 'Not provided'}
+
+🚀 FUTURE PHASE PRIORITIES
+--------------------------
+YouTube Integration: ${data.youtube_integration_priority || 'Not specified'}
+Photo Analysis: ${data.photo_analysis_priority || 'Not specified'}
+Multi-Site Rollout: ${data.rollout_approach || 'Not provided'}
+
+⚡ DETAILED TECHNICAL IMPLEMENTATION PLAN
+=========================================
+
+IMMEDIATE NEXT STEPS (Days 1-2):
+1. Secure Volusion admin access and test environment
+2. Export and analyze complete product catalog
+3. Review existing configurator logic and data structures
+4. Set up development environment with Volusion API access
+
+WEEK 1 DEVELOPMENT SPRINT:
+- Implement embedded chat widget with brand styling
+- Build product recommendation engine using catalog data
+- Create initial Q&A knowledge base from product specifications
+- Test basic Volusion cart integration functionality
+
+WEEK 2 DEVELOPMENT SPRINT:
+- Enhance recommendation algorithms with customer preference matching
+- Implement automated cart building with multi-product selections
+- Integrate configurator logic for chimney sizing and parts selection
+- Add conversation memory and context-aware responses
+
+WEEK 3 DEPLOYMENT & OPTIMIZATION:
+- Deploy to live discountstoves.net with analytics tracking
+- Conduct user testing and gather initial customer feedback
+- Optimize performance and refine AI responses
+- Prepare comprehensive results report for Phase 2 approval
+
+TECHNICAL ARCHITECTURE:
+- Flutter web chat widget embedded via JavaScript
+- Volusion API integration for cart and product operations
+- Cloud-hosted AI processing with OpenAI/Claude API
+- Firebase backend for conversation storage and analytics
+- Responsive design optimized for mobile and desktop
+
+RISK MITIGATION:
+- Staged deployment with fallback mechanisms
+- Comprehensive testing before live deployment
+- Regular backup of all configuration and code
+- Clear rollback procedures if issues arise
+
+💰 BUDGET OPTIMIZATION STRATEGY
+===============================
+With 10 hours/week allocation, focusing on highest-impact features first:
+- Hours 1-3: Core chat functionality and basic recommendations
+- Hours 4-6: Cart integration and configurator logic
+- Hours 7-8: Enhanced Q&A system and knowledge base
+- Hours 9-10: Testing, optimization, and analytics setup
+
+SUCCESS METRICS FOR PHASE 2 APPROVAL:
+- 25% reduction in customer support calls related to product selection
+- 15% improvement in conversion rate on pages with AI chat
+- 90%+ customer satisfaction rating for AI interactions
+- Clear ROI demonstration through increased sales attribution
+
+🔧 TECHNICAL CONSTRAINTS & CONSIDERATIONS
+=========================================
+${data.technical_constraints || 'None specified'}
+
+🏆 COMPETITIVE ANALYSIS NOTES
+-----------------------------
+${data.competitive_considerations || 'None provided'}
+
+❓ ADDITIONAL REQUIREMENTS
+-------------------------
+${data.additional_questions || 'None provided'}
+
+📞 NEXT STEPS
+=============
+1. Schedule technical access setup call within 24 hours
+2. Begin development environment configuration
+3. Start product catalog analysis and knowledge base development
+4. Weekly progress reviews every Wednesday at [agreed time]
+5. Live deployment target: [Date 3 weeks from start]
+
+This technical plan provides the foundation for implementing your AI customer guidance system with maximum impact within the Phase 1 constraints. I'm excited to help transform your customer experience and drive measurable business results!
+
+Ready to begin development as soon as technical access is confirmed.`;
+        }
+    </script>
+</body>
+</html>
